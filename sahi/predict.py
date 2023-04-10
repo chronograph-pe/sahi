@@ -1,6 +1,8 @@
 # OBSS SAHI Tool
 # Code written by Fatih C Akyon, 2020.
+# With edits by Alex Jiao, 2023
 
+import itertools
 import logging
 import os
 import time
@@ -106,7 +108,7 @@ def get_prediction(
         offset_amounts=offset_amounts,
         full_shapes=full_shapes,
     )
-    object_predictions: List[ObjectPrediction] = detection_model.object_predictions
+    object_predictions: List[ObjectPrediction] = itertools.chain.from_iterable(detection_model._object_predictions_per_image)
 
     # postprocess matching predictions
     if postprocess is not None:
