@@ -130,12 +130,15 @@ class PredictionResult:
     def __init__(
         self,
         object_predictions: List[ObjectPrediction],
-        image: Union[Image.Image, str, np.ndarray],
+        image: Union[Image.Image, str, np.ndarray, None],
         object_prediction_list: List[ObjectPrediction] = None,
         durations_in_seconds: Optional[Dict] = None,
     ):
-        self.image: Image.Image = read_image_as_pil(image)
-        self.image_width, self.image_height = self.image.size
+        if image is not None:
+            self.image: Image.Image = read_image_as_pil(image)
+            self.image_width, self.image_height = self.image.size
+        else:
+            self.image = self.image_width = self.image_height = None
         self.durations_in_seconds = durations_in_seconds
 
         if object_prediction_list is not None:
@@ -156,6 +159,7 @@ class PredictionResult:
         Returns:
 
         """
+        assert self.image, "Must provide a base image to draw visuals"
         Path(export_dir).mkdir(parents=True, exist_ok=True)
         visualize_object_predictions(
             image=np.ascontiguousarray(self.image),
@@ -193,6 +197,7 @@ class PredictionResult:
         except ImportError:
             raise ImportError('Please run "pip install -U fiftyone" to install fiftyone first for fiftyone conversion.')
 
+        assert self.image_width and self.image_height, "Must provide a base image to export to fiftyone"
         fiftyone_detection_list: List[fo.Detection] = []
         for object_prediction in self.object_predictions:
             fiftyone_detection_list.append(

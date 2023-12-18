@@ -124,8 +124,9 @@ def get_prediction(
             "seconds.",
         )
 
+    del image, images
     return PredictionResult(
-        image=image, object_predictions=object_predictions, durations_in_seconds=durations_in_seconds
+        image=None, object_predictions=object_predictions, durations_in_seconds=durations_in_seconds
     )
 
 
@@ -297,9 +298,9 @@ def get_sliced_prediction(
             durations_in_seconds["prediction"],
             "seconds.",
         )
-
+    del image, slice_image_result
     return PredictionResult(
-        image=image, object_predictions=object_predictions, durations_in_seconds=durations_in_seconds
+        image=None, object_predictions=object_predictions, durations_in_seconds=durations_in_seconds
     )
 
 

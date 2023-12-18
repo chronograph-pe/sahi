@@ -406,7 +406,7 @@ def slice_image(
     verboselog(
         "Num slices: " + str(n_ims) + " slice_height: " + str(slice_height) + " slice_width: " + str(slice_width)
     )
-
+    del image_pil
     return sliced_image_result
 
 
